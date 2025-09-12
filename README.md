@@ -1,8 +1,10 @@
 # hubsy
 
+```bash
 ╻ ╻╻ ╻┏┓ ┏━┓╻ ╻
 ┣━┫┃ ┃┣┻┓┗━┓┗┳┛
 ╹ ╹┗━┛┗━┛┗━┛ ╹ 
+```
 
 current state: work in progress
 
