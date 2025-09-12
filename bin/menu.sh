@@ -1,13 +1,15 @@
 #!/bin/bash
+HUBSY_PATH="$HOME/hubsy"
 
 EDITOR=code
 
 while true; do
     scripts=($(find ~/scripts -maxdepth 1 -type f -executable))
 
-    opcao=$(gum choose \
-      "Run command..." \
-      "Run scripts..." \
+    opcao=$(gum choose --header "Select an option with the arrow keys or type / to search by name" \
+      "Terminal" \
+      "Scripts" \
+      "Setup" \
       "   " \
       "BRIGHTNESS =======================" \
       "   " \
@@ -16,11 +18,13 @@ while true; do
       "   " \
       "SETTINGS =========================" \
       "   " \
-      "Edit home.sh" \
-      "Edit bashrc" \
       "Edit Aliases" \
       "Edit scripts..." \
-      "Edit .configs" \
+      "   " \
+      "TUI — Terminal User Interfaces ===" \
+      "   " \
+      "Lazydocker — A simple terminal UI for docker" \
+      "Btop — Resource Monitor" \
       "   " \
       "TOOLS ============================" \
       "   " \
@@ -28,10 +32,13 @@ while true; do
       "   " \
       "OTHERS ===========================" \
       "   " \
-      "About Hubsy" \
       "About This PC" \
+      "About Hubsy" \
       "   " \
       "Refresh Terminal" \
+      "   " \
+      "HUBSY DEBUG ===========================" \
+      "Set all bin files as executable" \
       "   " \
       "Exit")
 
@@ -39,35 +46,60 @@ while true; do
         "==="*) ;; # ignora divisor
         "  "*) ;;  # ignora divisor
 
-        "Edit bashrc")
-            $EDITOR ~/.bashrc
-            ;;
-
-        "Edit .configs")
-            $EDITOR ~/.config/.
-            ;;
-
-        "Run command...")
+        "Terminal")
+            clear 
+            echo "Opening a new terminal..."
+            echo ""
+            echo "To return do Hubsy, type 'hubsy' and press Enter."
+            echo ""
             return 0 2>/dev/null || break
             ;;
 
-        "Run scripts...")
+        "Scripts")
             if [ ${#scripts[@]} -eq 0 ]; then
                 echo "No scripts found in ~/scripts"
                 sleep 2
             else
-                opcoes=("Back to menu")
-                opcoes+=("${scripts[@]##*/}")
+                options=("Back to menu")
+                options+=("${scripts[@]##*/}")
 
-                escolha=$(printf "%s\n" "${opcoes[@]}" | gum choose)
+                scriptchoice=$(printf "%s\n" "${options[@]}" | gum choose)
 
-                if [ "$escolha" = "Back to menu" ]; then
+                if [ "$scriptchoice" = "Back to menu" ]; then
                     continue
                 else 
-                    bash ~/scripts/"$escolha"
+                    bash ~/scripts/"$scriptchoice"
                     gum confirm "Back to menu?" && continue
                 fi
             fi
+            ;;
+
+        "Setup")
+            $HUBSY_PATH/bin/setup.sh
+;;
+        
+        "Lazydocker — A simple terminal UI for docker")
+            if ! command -v lazydocker &> /dev/null; then
+                echo "Lazydocker is not installed. Please install it first."
+                sleep 2
+            else
+                lazydocker
+                gum confirm "Back to menu?" && continue
+            fi
+            ;;
+
+        "Btop — Resource Monitor")
+            if ! command -v btop &> /dev/null; then
+                echo "Btop is not installed. Please install it first."
+                sleep 2
+            else
+                btop
+                gum confirm "Back to menu?" && continue
+            fi
+            ;;
+
+        "Edit Aliases")
+            $EDITOR ~/.bash_aliases
             ;;
 
         "Edit scripts...")
@@ -84,10 +116,6 @@ while true; do
             sudo brightnessctl set 1% -q
             echo "🌑 Brightness set to 1%"
             gum confirm "Back to menu?" && continue
-            ;;
-
-        "Edit Aliases")
-            $EDITOR ~/.bash_aliases
             ;;
 
         "Linutil — Chris Titus Tech's Linux Toolbox")
@@ -125,6 +153,10 @@ while true; do
             gum confirm "Back to menu?" && continue
             ;;
 
+
+        "Set all bin files as executable")
+            find "$HUBSY_PATH/bin" -type f -name "*.sh" -exec chmod +x {} \;
+            ;;
         "Exit")
             clear 
             # echo "👋 bye"

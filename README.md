@@ -25,7 +25,7 @@ git clone https://github.com/pedrolucaslco/hubsy.git
 Execute this command to add the alias for Hubsy
 
 ```bash
-echo 'alias hubsy="~/hubsy/bin/hubsy.sh"' >> ~/.bash_aliases
+echo 'alias hubsy="~/hubsy/bin/hubsy"' >> ~/.bash_aliases
 ```
 
 Run and test.
