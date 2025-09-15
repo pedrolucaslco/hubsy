@@ -6,6 +6,7 @@ EDITOR=code
 CHOICES=(
   "Back to menu"
   "bashrc           Runs commands automatically whenever you open a terminal."
+  "bash_aliases     Add/Edit custom shortcuts for commands at .bash_aliases file."
   "configs          Edit .config/. applications files."
 )
 
@@ -27,6 +28,7 @@ else
   case "$INSTALLER" in
   "bashrc") INSTALLER_FILE="$HUBSY_PATH/bin/setup/bashrc.sh" ;;
   "configs") INSTALLER_FILE="$HUBSY_PATH/bin/setup/configs.sh" ;;
+  "bash_aliases") INSTALLER_FILE="$HUBSY_PATH/bin/setup/bash_aliases.sh" ;;
   "dev-editor") INSTALLER_FILE="$OMAKUB_PATH/bin/omakub-sub/install-dev-editor.sh" ;;
   "web-apps") INSTALLER_FILE="$OMAKUB_PATH/install/desktop/optional/select-web-apps.sh" ;;
   "dev-language") INSTALLER_FILE="$OMAKUB_PATH/install/terminal/select-dev-language.sh" ;;
