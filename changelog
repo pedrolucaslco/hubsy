@@ -1,0 +1,25 @@
+v0.1.2-alpha
+
+# What's Changed
+- Update refresh terminal logic
+- Update about hubsy description
+- Standardize text for "Back to menu"
+- Create separate description file
+- Create first version of install script
+- Update readme info
+
+---
+
+v0.1.1-alpha Latest
+
+# What's Changed
+- Better file organization and interactions
+- Rearranging of the menu options
+- Include btop shortcut
+- Include lazydocker shortcut
+
+---
+
+# Hubsy First Release
+
+First functional release to get this project started.
