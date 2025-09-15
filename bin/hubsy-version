@@ -1,0 +1,4 @@
+#!/bin/bash
+HUBSY_PATH="$HOME/hubsy"
+
+git -C "$HUBSY_PATH" describe --tags $(git -C "$HUBSY_PATH" rev-list --tags --max-count=1)

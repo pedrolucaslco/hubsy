@@ -9,42 +9,45 @@ while true; do
     opcao=$(gum choose --header "Select an option with the arrow keys or type / to search by name" \
       "Terminal" \
       "Scripts" \
+      "Install Apt Packages" \
       "Setup" \
+      "Refresh Terminal" \
       "   " \
-      "BRIGHTNESS =======================" \
-      "   " \
-      "Set Screen Britghtness to Max" \
-      "Set Screen Britghtness to Min" \
-      "   " \
-      "SETTINGS =========================" \
-      "   " \
-      "Edit Aliases" \
-      "Edit scripts..." \
-      "   " \
-      "TUI — Terminal User Interfaces ===" \
-      "   " \
+      "== TUI — Terminal Apps " \
       "Lazydocker — A simple terminal UI for docker" \
       "Btop — Resource Monitor" \
       "   " \
-      "TOOLS ============================" \
-      "   " \
+      "== Third Party Tools" \
       "Linutil — Chris Titus Tech's Linux Toolbox" \
       "   " \
-      "OTHERS ===========================" \
-      "   " \
+      "== About" \
       "About This PC" \
       "About Hubsy" \
       "   " \
-      "Refresh Terminal" \
       "   " \
-      "HUBSY DEBUG ===========================" \
-      "Set all bin files as executable" \
-      "   " \
-      "Exit")
+      "Exit Hubsy" \
+      "   ")
+
+    #   "== HUBSY DEBUG" \
+    #   "Set Screen Britghtness to Max" \
+    #   "Set Screen Britghtness to Min" \
+    #   "Set all bin files as executable" \
+    #   "Hubsy Dev Enviropment" \
 
     case "$opcao" in
-        "==="*) ;; # ignora divisor
-        "  "*) ;;  # ignora divisor
+        *"==="*) ;; # ignora divisor
+        *"   "*) ;;  # ignora divisor 
+
+        "Install Apt Packages")
+            $HUBSY_PATH/bin/apt-install.sh
+            gum confirm "Back to menu?" && continue
+            ;;
+
+        "Hubsy Dev Enviropment")
+            gum spin --spinner dot --title "Opening Hubsy Development Enviropment..." -- sleep 1
+            code $HUBSY_PATH
+            gum confirm "Back to menu?" && continue
+            ;;
 
         "Terminal")
             clear 
@@ -61,11 +64,16 @@ while true; do
                 sleep 2
             else
                 options=("Back to menu")
+                options+=("Edit scripts...")
                 options+=("${scripts[@]##*/}")
 
                 scriptchoice=$(printf "%s\n" "${options[@]}" | gum choose)
 
                 if [ "$scriptchoice" = "Back to menu" ]; then
+                    continue
+                elif [ "$scriptchoice" = "Edit scripts..." ]; then
+                    gum spin --spinner dot --title "Opening scripts folder..." -- sleep 1
+                    $EDITOR ~/scripts/.
                     continue
                 else 
                     bash ~/scripts/"$scriptchoice"
@@ -78,7 +86,7 @@ while true; do
             $HUBSY_PATH/bin/setup.sh
 ;;
         
-        "Lazydocker — A simple terminal UI for docker")
+        *"Lazydocker — A simple terminal UI for docker")
             if ! command -v lazydocker &> /dev/null; then
                 echo "Lazydocker is not installed. Please install it first."
                 sleep 2
@@ -88,7 +96,7 @@ while true; do
             fi
             ;;
 
-        "Btop — Resource Monitor")
+        *"Btop — Resource Monitor")
             if ! command -v btop &> /dev/null; then
                 echo "Btop is not installed. Please install it first."
                 sleep 2
@@ -96,14 +104,6 @@ while true; do
                 btop
                 gum confirm "Back to menu?" && continue
             fi
-            ;;
-
-        "Edit Aliases")
-            $EDITOR ~/.bash_aliases
-            ;;
-
-        "Edit scripts...")
-            $EDITOR ~/scripts/.
             ;;
 
         *"Set Screen Britghtness to Max")
@@ -118,7 +118,7 @@ while true; do
             gum confirm "Back to menu?" && continue
             ;;
 
-        "Linutil — Chris Titus Tech's Linux Toolbox")
+        *"Linutil — Chris Titus Tech's Linux Toolbox")
             curl -fsSL https://christitus.com/linux | sh
             gum confirm "Back to menu?" && continue
             ;;
@@ -131,13 +131,13 @@ while true; do
             exec "$SHELL"
             ;;
 
-        "About This PC")
+        *"About This PC")
             clear
             fastfetch
             gum confirm "Back to menu?" && continue
             ;;
 
-        "About Hubsy")
+        *"About Hubsy")
             clear
             source $HUBSY_PATH/bin/header.sh
             echo " "
@@ -150,9 +150,10 @@ while true; do
 
 
         "Set all bin files as executable")
-            find "$HUBSY_PATH/bin" -type f -name "*.sh" -exec chmod +x {} \;
+            find "$HUBSY_PATH/bin" -type f -exec sudo chmod +x {} \;
+            gum confirm "Back to menu?" && continue
             ;;
-        "Exit")
+        "Exit Hubsy")
             clear 
             # echo "👋 bye"
             # exit 0
@@ -160,4 +161,3 @@ while true; do
             ;;
     esac
 done
-
