@@ -5,9 +5,9 @@
 ┣━┫┃ ┃┣┻┓┗━┓┗┳┛
 ╹ ╹┗━┛┗━┛┗━┛ ╹ 
 ```
-
+<br>
 current state: work in progress
-
+<br>
 Hubsy is a lightweight Linux terminal hub designed to help new users
 quickly configure essential settings, manage scripts, and access
 useful tools for an improved user experience. Streamline setup,
@@ -19,13 +19,13 @@ single, easy-to-use interface.
 Clone this repository to your home folder
 
 ```bash
-git clone https://github.com/pedrolucaslco/hubsy.git
+git clone https://github.com/pedrolucaslco/hubsy.git ~/hubsy
 ```
 
 Execute this command to add the alias for Hubsy
 
 ```bash
-echo 'alias hubsy="~/hubsy/bin/hubsy"' >> ~/.bash_aliases
+cd ~/hubsy && bash install.sh
 ```
 
-Run and test.
+Run and enjoy!

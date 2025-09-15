@@ -4,14 +4,14 @@ HUBSY_PATH="$HOME/hubsy"
 EDITOR=code
 
 CHOICES=(
-  "<< Back           "
+  "Back to menu"
   "bashrc           Runs commands automatically whenever you open a terminal."
   "configs          Edit .config/. applications files."
 )
 
 CHOICE=$(gum choose "${CHOICES[@]}" --height 26 --header "Choose a file to setup:")
 
-if [[ "$CHOICE" == "<< Back"* ]] || [[ -z "$CHOICE" ]]; then
+if [[ "$CHOICE" == "Back to menu"* ]] || [[ -z "$CHOICE" ]]; then
   # Don't install anything
   echo ""
 elif [[ "$CHOICE" == "> All"* ]]; then
