@@ -3,62 +3,53 @@ HUBSY_PATH="$HOME/hubsy"
 
 EDITOR=code
 
+# Ascii icons: ✱ ├ └ ─
+
 while true; do
     scripts=($(find ~/scripts -maxdepth 1 -type f -executable))
 
     opcao=$(gum choose --header "Select an option with the arrow keys or type / to search by name" \
-      "Terminal" \
-      "Scripts" \
-      "Install Apt Packages" \
-      "Setup" \
-      "Refresh Terminal" \
+      "Terminal           — Exit Hubsy directly to Terminal" \
+      "Scripts            — Run your custom scripts from ~/scripts" \
+      "Install            — Install apt packages with easy search" \
+      "Setup              — Setup common linux files and .config files from applications" \
+      "Refresh Terminal   — Run a simple source ./bashrc " \
       "   " \
-      "== TUI — Terminal Apps " \
-      "Lazydocker — A simple terminal UI for docker" \
-      "Btop — Resource Monitor" \
+      "── TUI Terminal Interfaces" \
       "   " \
-      "== Third Party Tools" \
-      "Linutil — Chris Titus Tech's Linux Toolbox" \
+      "Lazydocker         — A simple terminal UI for docker" \
+      "Btop               — Resource Monitor on Terminal" \
       "   " \
-      "== About" \
-      "About This PC" \
-      "About Hubsy" \
+      "── Third Party Tools from the Community" \
       "   " \
+      "Linutil            — Chris Titus Tech's Linux Toolbox" \
       "   " \
-      "Exit Hubsy" \
+      "── About" \
+      "   " \
+      "About This PC      — Show system information with Fastfetch" \
+      "About Hubsy        — Hubsy about section" \
       "   ")
 
-    #   "== HUBSY DEBUG" \
+    #   "── Hubsy Debug" \
     #   "Set Screen Britghtness to Max" \
     #   "Set Screen Britghtness to Min" \
     #   "Set all bin files as executable" \
     #   "Hubsy Dev Enviropment" \
 
     case "$opcao" in
-        *"==="*) ;; # ignora divisor
-        *"   "*) ;;  # ignora divisor 
+        # *"   "*) ;;  # ignora divisor 
+        # *"──"*) ;; # ignora divisor
 
-        "Install Apt Packages")
-            $HUBSY_PATH/bin/apt-install.sh
-            gum confirm "Back to menu?" && continue
-            ;;
-
-        "Hubsy Dev Enviropment")
-            gum spin --spinner dot --title "Opening Hubsy Development Enviropment..." -- sleep 1
-            code $HUBSY_PATH
-            gum confirm "Back to menu?" && continue
-            ;;
-
-        "Terminal")
+        Terminal*)
             clear 
-            echo "Opening a new terminal..."
+            gum spin --spinner dot --title "Opening a new terminal..." -- sleep 1
             echo ""
             echo "To return do Hubsy, type 'hubsy' and press Enter."
             echo ""
             return 0 2>/dev/null || break
             ;;
 
-        "Scripts")
+        Scripts*)
             if [ ${#scripts[@]} -eq 0 ]; then
                 echo "No scripts found in ~/scripts"
                 sleep 2
@@ -82,11 +73,24 @@ while true; do
             fi
             ;;
 
-        "Setup")
+        Install*)
+            $HUBSY_PATH/bin/apt-install.sh
+            gum confirm "Back to menu?" && continue
+            ;;
+
+        Setup*)
             $HUBSY_PATH/bin/setup.sh
-;;
+            ;;
         
-        *"Lazydocker — A simple terminal UI for docker")
+        *"Refresh Terminal"*)
+            gum spin --spinner dot --title "Refreshing terminal..." -- sleep 1
+            
+            [ -f ~/.bashrc ] && source ~/.bashrc
+            [ -f ~/.bash_aliases ] && source ~/.bash_aliases
+            exec "$SHELL"
+            ;;
+
+        Lazydocker*)
             if ! command -v lazydocker &> /dev/null; then
                 echo "Lazydocker is not installed. Please install it first."
                 sleep 2
@@ -96,7 +100,7 @@ while true; do
             fi
             ;;
 
-        *"Btop — Resource Monitor")
+        Btop*)
             if ! command -v btop &> /dev/null; then
                 echo "Btop is not installed. Please install it first."
                 sleep 2
@@ -106,38 +110,18 @@ while true; do
             fi
             ;;
 
-        *"Set Screen Britghtness to Max")
-            sudo brightnessctl set 70% -q
-            echo "🔆 Brightness set to 70%"
-            gum confirm "Back to menu?" && continue
-            ;;
-
-        *"Set Screen Britghtness to Min")
-            sudo brightnessctl set 1% -q
-            echo "🌑 Brightness set to 1%"
-            gum confirm "Back to menu?" && continue
-            ;;
-
-        *"Linutil — Chris Titus Tech's Linux Toolbox")
+        Linutil*)
             curl -fsSL https://christitus.com/linux | sh
             gum confirm "Back to menu?" && continue
             ;;
 
-        "Refresh Terminal")
-            gum spin --spinner dot --title "Refreshing terminal..." -- sleep 1
-            
-            [ -f ~/.bashrc ] && source ~/.bashrc
-            [ -f ~/.bash_aliases ] && source ~/.bash_aliases
-            exec "$SHELL"
-            ;;
-
-        *"About This PC")
+        *"About This PC"*)
             clear
             fastfetch
             gum confirm "Back to menu?" && continue
             ;;
 
-        *"About Hubsy")
+        *"About Hubsy"*)
             clear
             source $HUBSY_PATH/bin/header.sh
             echo " "
@@ -149,15 +133,28 @@ while true; do
             ;;
 
 
-        "Set all bin files as executable")
-            find "$HUBSY_PATH/bin" -type f -exec sudo chmod +x {} \;
+        # DEBUG OPTIONS
+        *"Hubsy Dev Enviropment"*)
+            gum spin --spinner dot --title "Opening Hubsy Development Enviropment..." -- sleep 1
+            code $HUBSY_PATH
             gum confirm "Back to menu?" && continue
             ;;
-        "Exit Hubsy")
-            clear 
-            # echo "👋 bye"
-            # exit 0
-            return 0 2>/dev/null || break
+
+        *"Set Screen Britghtness to Max"*)
+            sudo brightnessctl set 70% -q
+            echo "🔆 Brightness set to 70%"
+            gum confirm "Back to menu?" && continue
+            ;;
+
+        *"Set Screen Britghtness to Min"*)
+            sudo brightnessctl set 1% -q
+            echo "🌑 Brightness set to 1%"
+            gum confirm "Back to menu?" && continue
+            ;;
+
+        *"Set all bin files as executable"*)
+            find "$HUBSY_PATH/bin" -type f -exec sudo chmod +x {} \;
+            gum confirm "Back to menu?" && continue
             ;;
     esac
 done
