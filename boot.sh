@@ -28,5 +28,6 @@ echo -e "\nCloning Hubsy from: https://github.com/${HUBSY_REPO}.git"
 # rm -rf $HUBSY_PATH
 # git clone "https://github.com/${HUBSY_REPO}.git" $HUBSY_PATH >/dev/null
 
-echo -e "\nInstallation starting..."
-source $HUBSY_PATH/bin/install.sh
+echo -e "\nInstallation starting..." && sleep 2
+clear
+source $HUBSY_PATH/install.sh
