@@ -1,15 +1,16 @@
-v0.1.7
+v0.1.11
+# What's Changed
+- Add hubsy single-command install script
+- Fix version exibition fetching from git latest release
 
+v0.1.7
 # What's Changed
 - Better menu organization and styling
 - Add shortcut for install apt packages
 - Remove debug menu options from release version
 - Automate hubsy vesion based on git release tag
 
----
-
 v0.1.2-alpha
-
 # What's Changed
 - Update refresh terminal logic
 - Update about hubsy description
@@ -18,10 +19,7 @@ v0.1.2-alpha
 - Create first version of install script
 - Update readme info
 
----
-
 v0.1.1-alpha Latest
-
 # What's Changed
 - Better file organization and interactions
 - Rearranging of the menu options
