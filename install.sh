@@ -2,7 +2,7 @@
 
 HUBSY_PATH="$HOME/hubsy"
 
-source ~/hubsy/bin/header.sh
+source ~/hubsy/bin/header
 
 read -p "Do you want to install Hubsy? (y/n): " answer
 
@@ -41,7 +41,7 @@ gum spin --spinner dot --title "Checking alias for hubsy in .bash_aliases..." --
 
 if ! grep -q "alias hubsy=" "$HOME/.bash_aliases"; then
     echo "-> Adding alias for hubsy to .bash_aliases..."
-    echo "alias hubsy='bash $HUBSY_PATH/bin/menu.sh'" >> "$HOME/.bash_aliases"
+    echo "alias hubsy='bash $HUBSY_PATH/bin/menu'" >> "$HOME/.bash_aliases"
 else 
     echo "-> Alias for hubsy already exists in .bash_aliases"
 fi

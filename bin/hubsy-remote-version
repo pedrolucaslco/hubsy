@@ -1,4 +1,5 @@
 #!/bin/bash
 HUBSY_PATH="$HOME/hubsy"
 
+git -C "$HUBSY_PATH" fetch origin >/dev/null 2>&1
 git -C "$HUBSY_PATH" describe --tags $(git -C "$HUBSY_PATH" rev-list --tags --max-count=1)

@@ -1,0 +1,17 @@
+#!/bin/bash
+# Check and Update version of Hubsy --------------------------------------------
+# Compare local and remote versions and update Hubsy pulling the latest
+# version if they are different.
+
+HUBSY_OLD_VERSION=$(cat $HUBSY_PATH/share/version)
+
+git -C "$HUBSY_PATH" pull origin master >/dev/null 2>&1
+
+HUBSY_NEW_VERSION=$(cat $HUBSY_PATH/share/version)
+
+if [ "$HUBSY_LOCAL_VERSION" != "$HUBSY_REMOTE_VERSION" ]; then
+  echo "" 
+  echo "Hubsy updated to version $HUBSY_REMOTE_VERSION"
+  echo ""
+  sleep 1
+fi

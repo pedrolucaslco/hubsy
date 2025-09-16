@@ -1,0 +1,4 @@
+- Update version in share/version
+- Write changelog
+- Make a "release" commit
+- Create new release on GitHub website

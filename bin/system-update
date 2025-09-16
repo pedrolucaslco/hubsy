@@ -1,0 +1,13 @@
+#!/bin/bash
+
+HUBSY_PATH="$HOME/hubsy"
+
+gum spin --spinner dot --title "Updating APT packages..." -- sleep 0.5
+
+sudo apt update -y && sudo apt upgrade -y
+
+gum spin --spinner dot --title "Updating Flatpak packages..." -- sleep 0.5
+
+flatpak update -y
+
+clear && source $HUBSY_PATH/bin/header

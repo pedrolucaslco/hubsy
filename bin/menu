@@ -1,10 +1,11 @@
 #!/bin/bash
-HUBSY_PATH="$HOME/hubsy"
+# Hubsy Menu ------------------------------------------------------------------
 
-EDITOR=code
+# Useful ascii icons: ✱ ├ └ ─
 
-# Ascii icons: ✱ ├ └ ─
+# Check and Update version of Hubsy --------------------------------------------
 
+# Show menu --------------------------------------------------------------------
 while true; do
     scripts=($(find ~/scripts -maxdepth 1 -type f -executable))
 
@@ -12,6 +13,7 @@ while true; do
       "Terminal           — Exit Hubsy directly to Terminal" \
       "Scripts            — Run your custom scripts from ~/scripts" \
       "Install            — Install apt packages with easy search" \
+      "Update             — Update & Upgrade your system" \
       "Setup              — Setup common linux files and .config files from applications" \
       "Refresh Terminal   — Run a simple source ./bashrc " \
       "   " \
@@ -28,11 +30,13 @@ while true; do
       "   " \
       "About This PC      — Show system information with Fastfetch" \
       "About Hubsy        — Hubsy about section" \
+      "   " \
+      "Quit               — Exit Hubsy and Quit the terminal" \
+      "Set Screen Britghtness to Max" \
+      "Set Screen Britghtness to Min" \
       "   ")
 
     #   "── Hubsy Debug" \
-    #   "Set Screen Britghtness to Max" \
-    #   "Set Screen Britghtness to Min" \
     #   "Set all bin files as executable" \
     #   "Hubsy Dev Enviropment" \
 
@@ -42,7 +46,7 @@ while true; do
 
         Terminal*)
             clear 
-            gum spin --spinner dot --title "Opening a new terminal..." -- sleep 1
+            gum spin --spinner dot --title "Opening a new terminal..." -- sleep 0.5
             echo ""
             echo "To return do Hubsy, type 'hubsy' and press Enter."
             echo ""
@@ -63,7 +67,7 @@ while true; do
                 if [ "$scriptchoice" = "Back to menu" ]; then
                     continue
                 elif [ "$scriptchoice" = "Edit scripts..." ]; then
-                    gum spin --spinner dot --title "Opening scripts folder..." -- sleep 1
+                    gum spin --spinner dot --title "Opening scripts folder..." -- sleep 0.5
                     $EDITOR ~/scripts/.
                     continue
                 else 
@@ -78,12 +82,19 @@ while true; do
             gum confirm "Back to menu?" && continue
             ;;
 
+        Update*)
+            source $HUBSY_PATH/bin/system-update
+            source $HUBSY_PATH/bin/hubsy-update
+
+            gum confirm "System and Hubsy updated. Back to menu?" && continue
+            ;;
+
         Setup*)
             $HUBSY_PATH/bin/setup.sh
             ;;
         
         *"Refresh Terminal"*)
-            gum spin --spinner dot --title "Refreshing terminal..." -- sleep 1
+            gum spin --spinner dot --title "Refreshing terminal..." -- sleep 0.5
             
             [ -f ~/.bashrc ] && source ~/.bashrc
             [ -f ~/.bash_aliases ] && source ~/.bash_aliases
@@ -123,7 +134,7 @@ while true; do
 
         *"About Hubsy"*)
             clear
-            source $HUBSY_PATH/bin/header.sh
+            source $HUBSY_PATH/bin/header
             echo " "
             cat $HUBSY_PATH/description
             echo " "
@@ -132,10 +143,14 @@ while true; do
             gum confirm "Back to menu?" && continue
             ;;
 
+        Quit*)
+            clear && exit
+        ;;
+
 
         # DEBUG OPTIONS
         *"Hubsy Dev Enviropment"*)
-            gum spin --spinner dot --title "Opening Hubsy Development Enviropment..." -- sleep 1
+            gum spin --spinner dot --title "Opening Hubsy Development Enviropment..." -- sleep 0.5
             code $HUBSY_PATH
             gum confirm "Back to menu?" && continue
             ;;

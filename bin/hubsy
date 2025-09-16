@@ -1,9 +1,12 @@
 #!/bin/bash
+
+# Set Global Variables ---------------------------------------------------------
 HUBSY_PATH="$HOME/hubsy"
+EDITOR=code
 
-# Get Hubsy version from latest git release
-git fetch origin
-
+# Prep the terminal ------------------------------------------------------------
 clear
-source $HUBSY_PATH/bin/header.sh
-source $HUBSY_PATH/bin/menu.sh
+
+# Render Hubsy UI --------------------------------------------------------------
+source $HUBSY_PATH/bin/header
+source $HUBSY_PATH/bin/menu
