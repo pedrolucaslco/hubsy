@@ -1,3 +1,13 @@
+v0.1.7
+
+# What's Changed
+- Better menu organization and styling
+- Add shortcut for install apt packages
+- Remove debug menu options from release version
+- Automate hubsy vesion based on git release tag
+
+---
+
 v0.1.2-alpha
 
 # What's Changed
