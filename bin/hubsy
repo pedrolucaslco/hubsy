@@ -1,8 +1,19 @@
 #!/bin/bash
 
 # Set Global Variables ---------------------------------------------------------
+HUBSY_DEBUG=0
 HUBSY_PATH="$HOME/hubsy"
 EDITOR=code
+
+# Parse args -------------------------------------------------------------------
+
+for arg in "$@"; do
+    case "$arg" in
+        --debug)
+            HUBSY_DEBUG=1
+            ;;
+    esac
+done
 
 # Prep the terminal ------------------------------------------------------------
 clear

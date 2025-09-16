@@ -6,41 +6,54 @@
 # Check and Update version of Hubsy --------------------------------------------
 
 # Show menu --------------------------------------------------------------------
+
+ menu_options=(
+    "Terminal           — Exit Hubsy directly to Terminal" \
+    "Scripts            — Run your custom scripts from ~/scripts" \
+    "Install            — Install apt packages with easy search" \
+    "Update             — Update & Upgrade your system" \
+    "Setup              — Setup common linux files and .config files from applications" \
+    "Refresh Terminal   — Run a simple source ./bashrc " \
+    "   " \
+    "── TUI Terminal Interfaces" \
+    "   " \
+    "Lazydocker         — A simple terminal UI for docker" \
+    "Btop               — Resource Monitor on Terminal" \
+    "   " \
+    "── Third Party Tools from the Community" \
+    "   " \
+    "Linutil            — Chris Titus Tech's Linux Toolbox" \
+    "   " \
+    "── About" \
+    "   " \
+    "About This PC      — Show system information with Fastfetch" \
+    "About Hubsy        — Hubsy about section" \
+    "   " \
+    "Quit               — Exit Hubsy and Quit the terminal" \
+    "   "
+)
+
+# Só adiciona debug se tiver flag
+if [ "$HUBSY_DEBUG" -eq 1 ]; then
+    menu_options+=("── Hubsy Debug" \
+    "   " \
+    "Hubsy Dev Enviropment" \
+    "Set all bin files as executable" \
+    "Set Screen Britghtness to Max" \
+    "Set Screen Britghtness to Min" \
+    "   ")
+fi
+
 while true; do
-    scripts=($(find ~/scripts -maxdepth 1 -type f -executable))
 
-    opcao=$(gum choose --header "Select an option with the arrow keys or type / to search by name" \
-      "Terminal           — Exit Hubsy directly to Terminal" \
-      "Scripts            — Run your custom scripts from ~/scripts" \
-      "Install            — Install apt packages with easy search" \
-      "Update             — Update & Upgrade your system" \
-      "Setup              — Setup common linux files and .config files from applications" \
-      "Refresh Terminal   — Run a simple source ./bashrc " \
-      "   " \
-      "── TUI Terminal Interfaces" \
-      "   " \
-      "Lazydocker         — A simple terminal UI for docker" \
-      "Btop               — Resource Monitor on Terminal" \
-      "   " \
-      "── Third Party Tools from the Community" \
-      "   " \
-      "Linutil            — Chris Titus Tech's Linux Toolbox" \
-      "   " \
-      "── About" \
-      "   " \
-      "About This PC      — Show system information with Fastfetch" \
-      "About Hubsy        — Hubsy about section" \
-      "   " \
-      "Quit               — Exit Hubsy and Quit the terminal" \
-      "Set Screen Britghtness to Max" \
-      "Set Screen Britghtness to Min" \
-      "   ")
+    clear
+    source $HUBSY_PATH/bin/header
 
-    #   "── Hubsy Debug" \
-    #   "Set all bin files as executable" \
-    #   "Hubsy Dev Enviropment" \
+    option=$(gum choose --header "Select an option with the arrow keys or type / to search by name" \
+      "${menu_options[@]}"
+      )
 
-    case "$opcao" in
+    case "$option" in
         # *"   "*) ;;  # ignora divisor 
         # *"──"*) ;; # ignora divisor
 
@@ -54,6 +67,8 @@ while true; do
             ;;
 
         Scripts*)
+            scripts=($(find ~/scripts -maxdepth 1 -type f -executable))
+            
             if [ ${#scripts[@]} -eq 0 ]; then
                 echo "No scripts found in ~/scripts"
                 sleep 2
