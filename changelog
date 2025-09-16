@@ -1,3 +1,9 @@
+v0.3.2
+# What's Changed
+- Enable debug flag hubsy --debug
+- Cleanup omakub templates from setup.sh submenu
+- Better binaries names
+
 v0.2.0
 # What's Changed
 - Better file organization and interaction
