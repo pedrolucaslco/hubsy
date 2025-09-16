@@ -1,5 +1,9 @@
 #!/bin/bash
 HUBSY_PATH="$HOME/hubsy"
+
+# Get Hubsy version from latest git release
+git fetch origin
+
 clear
 source $HUBSY_PATH/bin/header.sh
 source $HUBSY_PATH/bin/menu.sh
