@@ -23,6 +23,7 @@
     "── Third Party Tools from the Community" \
     "   " \
     "Linutil            — Chris Titus Tech's Linux Toolbox" \
+    "Systemctl-tui      — A TUI for manage systemd services" \
     "   " \
     "── About" \
     "   " \
@@ -139,6 +140,17 @@ while true; do
         Linutil*)
             curl -fsSL https://christitus.com/linux | sh
             gum confirm "Back to menu?" && continue
+            ;;
+
+        Systemctl-tui*)
+            if ! command -v systemctl-tui &> /dev/null; then
+                gum spin --spinner dot --title "Installing Systemctl-tui..." -- sleep 1
+                curl https://raw.githubusercontent.com/rgwood/systemctl-tui/master/install.sh | bash
+            else
+                systemctl_tui_path=$(which systemctl-tui)
+                sudo $systemctl_tui_path
+                gum confirm "Back to menu?" && continue
+            fi
             ;;
 
         *"About This PC"*)
