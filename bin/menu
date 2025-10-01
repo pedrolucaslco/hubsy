@@ -31,8 +31,13 @@
     "About Hubsy        — Hubsy about section" \
     "   " \
     "Quit               — Exit Hubsy and Quit the terminal" \
+    "Shutdown           — Shutdown the system" \
+    "Restart            — Restart the system" \
+    "CheckMem           — Check memory" \
     "   "
 )
+
+# menu_options+=($(find ~/scripts -maxdepth 1 -type f -executable))
 
 # Só adiciona debug se tiver flag
 if [ "$HUBSY_DEBUG" -eq 1 ]; then
@@ -50,9 +55,19 @@ while true; do
     clear
     source $HUBSY_PATH/bin/header
 
-    option=$(gum choose --header "Select an option with the arrow keys or type / to search by name" \
-      "${menu_options[@]}"
-      )
+    option=$(printf "%s\n" "${menu_options[@]}" | fzf \
+        --prompt="Select an option: " \
+        --header="Use arrows or type to search" \
+        --border --height=80% --reverse \
+        # --color=fg:#cdd6f4,bg:#1e1e2e,hl:#f38ba8 \
+        # --color=fg+:#cdd6f4,bg+:#313244,hl+:#f38ba8 \
+        # --color=info:#89b4fa,prompt:#f9e2af,pointer:#a6e3a1,marker:#a6e3a1
+        )
+
+    # Se não selecionar nada (ESC ou CTRL+C)
+    [ -z "$option" ] && break
+
+
 
     case "$option" in
         # *"   "*) ;;  # ignora divisor 
@@ -60,25 +75,34 @@ while true; do
 
         Terminal*)
             clear 
-            gum spin --spinner dot --title "Opening a new terminal..." -- sleep 0.5
-            echo ""
-            echo "To return do Hubsy, type 'hubsy' and press Enter."
-            echo ""
+            gum spin --spinner dot --title "Opening a new terminal..." -- sleep 0.2
+            echo 'To return do Hubsy, type "hubsy" and press Enter.'
             return 0 2>/dev/null || break
             ;;
 
         Scripts*)
+
             scripts=($(find ~/scripts -maxdepth 1 -type f -executable))
             
             if [ ${#scripts[@]} -eq 0 ]; then
                 echo "No scripts found in ~/scripts"
                 sleep 2
             else
+
                 options=("Back to menu")
                 options+=("Edit scripts...")
+                options+=("Set all scripts as executable")
+                options+=(" ")
                 options+=("${scripts[@]##*/}")
-
-                scriptchoice=$(printf "%s\n" "${options[@]}" | gum choose)
+                
+                scriptchoice=$(printf "%s\n" "${options[@]}" | fzf \
+                    --prompt="Select an option: " \
+                    --header="Use arrows or type to search" \
+                    --border --height=80% --reverse \
+                    # --color=fg:#cdd6f4,bg:#1e1e2e,hl:#f38ba8 \
+                    # --color=fg+:#cdd6f4,bg+:#313244,hl+:#f38ba8 \
+                    # --color=info:#89b4fa,prompt:#f9e2af,pointer:#a6e3a1,marker:#a6e3a1
+                )
 
                 if [ "$scriptchoice" = "Back to menu" ]; then
                     continue
@@ -86,6 +110,10 @@ while true; do
                     gum spin --spinner dot --title "Opening scripts folder..." -- sleep 0.5
                     $EDITOR ~/scripts/.
                     continue
+                elif [ "$scriptchoice" = "Set all scripts as executable" ]; then
+                    sudo chmod +x ~/scripts/*.sh
+                    gum spin --spinner dot --title "Setting all scripts as executable..." -- sleep 0.5
+                    gum confirm "Back to menu?" && continue
                 else 
                     bash ~/scripts/"$scriptchoice"
                     gum confirm "Back to menu?" && continue
@@ -174,6 +202,25 @@ while true; do
             clear && exit
         ;;
 
+        Shutdown*)
+            gum spin --spinner dot --title "Shutting down the system..." -- sleep 0.5
+            sudo shutdown -h now
+            ;;
+        
+        Restart*)
+            gum spin --spinner dot --title "Restarting the system..." -- sleep 0.5
+            sudo shutdown -r now
+            ;;
+
+        CheckMem*)
+            gum spin --spinner dot --title "Checking memory..." -- sleep 0.5
+            echo "=== Memória e Swap ==="; free -h; \
+            echo; echo "=== ZRAM ==="; swapon --show; \
+            echo; echo "=== Swappiness / Cache Pressure ==="; cat /proc/sys/vm/swappiness /proc/sys/vm/vfs_cache_pressure | awk '{if(NR==1) print "swappiness: "$1; else print "vfs_cache_pressure: "$1}'; \
+            echo; echo "=== systemd-oomd ==="; systemctl is-active systemd-oomd; \
+            echo; echo "=== Top processos por RAM ==="; ps -eo pid,ppid,cmd,%mem,%cpu --sort=-%mem | head -n 10
+            gum confirm "Back to menu?" && continue
+            ;;
 
         # DEBUG OPTIONS
         *"Hubsy Dev Enviropment"*)
