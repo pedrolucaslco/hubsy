@@ -2,12 +2,16 @@
 
 HUBSY_PATH="$HOME/hubsy"
 
-gum spin --spinner dot --title "Updating APT packages..." -- sleep 0.5
+gum spin --spinner dot --title "Updating APT packages..." -- sleep 1
 
 sudo apt update -y && sudo apt upgrade -y
 
-gum spin --spinner dot --title "Updating Flatpak packages..." -- sleep 0.5
+gum spin --spinner dot --title "Updating Flatpak packages..." -- sleep 1
 
 flatpak update -y
 
-clear && source $HUBSY_PATH/bin/header
+gum spin --spinner dot --title "Updating Brew packages..." -- sleep 1
+
+brew update && brew upgrade
+
+# clear && source $HUBSY_PATH/bin/header

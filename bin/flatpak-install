@@ -1,0 +1,22 @@
+#!/bin/bash
+
+read -rp "Buscar app no Flathub: " QUERY
+[[ -z "$QUERY" ]] && exit 0
+
+LIST=$(gum spin \
+  --spinner dot \
+  --title "Carregando apps do Flathub..." \
+  -- bash -c '
+    flatpak search . --columns=application flathub \
+      | tail -n +2 \
+      | grep -Ev "\.(Sdk|Platform|Locale|Debug)$"
+  '
+)
+
+[[ -z "$LIST" ]] && exit 0
+
+apps=$(printf '%s\n' "$LIST" | fzf --multi --query="$QUERY")
+
+if [[ -n "$apps" ]]; then
+  echo "$apps" | tr '\n' ' ' | xargs flatpak install -y flathub
+fi

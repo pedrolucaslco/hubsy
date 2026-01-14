@@ -1,0 +1,21 @@
+#!/bin/bash
+set -e
+trap 'clear' SIGINT
+cat > /tmp/.dialogrc << EOL
+# Item color
+tag_color = (BLACK,WHITE,ON)
+EOL
+action=$(DIALOGRC=/tmp/.dialogrc dialog --stdout --erase-on-exit --menu "Choose the action for apt" 10 40 0 "Install" 1 "Install from .deb file" 2 "Update" 3 "Upgrade" 4 "Remove" 5 "Autoremove" 6)
+
+
+if [[ $action == "Install" ]]; then 
+  package=$(apt list -qq 2>/dev/null | grep -v installed | cut --delimiter '/' --fields 1 | fzf --multi --cycle --reverse --preview 'apt show 2>/dev/null {1}')
+  sudo apt ${action,,} $package -y
+elif [[ $action == "Remove" ]]; then 
+  package=$(apt list -qq --installed 2>/dev/null | cut --delimiter '/' --fields 1 | fzf --multi --cycle --reverse --preview 'apt show 2>/dev/null {1}')
+  sudo apt ${action,,} $package -y
+elif [[ $action == "Install from .deb file" ]]; then 
+  find . -name "*.deb" | fzf | xargs -I _ sudo apt install -y _
+elif [[ $action == "Update" || $action == "Upgrade" || $action == "Autoremove"  ]]; then 
+  sudo apt ${action,,} -y
+fi

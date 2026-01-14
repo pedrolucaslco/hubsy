@@ -7,37 +7,36 @@
 
 # Show menu --------------------------------------------------------------------
 
- menu_options=(
+SCRIPTS_PATH="$HOME/scripts"
+
+menu_options=(
     "Terminal           — Exit Hubsy directly to Terminal" \
     "Scripts            — Run your custom scripts from ~/scripts" \
-    "Install            — Install apt packages with easy search" \
+    "Install APT        — Install apt packages with easy search" \
+    "Install Flatpak    — Install flatpak packages with easy search" \
     "Update             — Update & Upgrade your system" \
+    "Search Packages    — Search packages from your system" \
     "Setup              — Setup common linux files and .config files from applications" \
-    "Refresh Terminal   — Run a simple source ./bashrc " \
-    "   " \
-    "── TUI Terminal Interfaces" \
-    "   " \
-    "Lazydocker         — A simple terminal UI for docker" \
-    "Btop               — Resource Monitor on Terminal" \
-    "   " \
-    "── Third Party Tools from the Community" \
-    "   " \
-    "Linutil            — Chris Titus Tech's Linux Toolbox" \
-    "Systemctl-tui      — A TUI for manage systemd services" \
-    "   " \
-    "── About" \
-    "   " \
+    "   "
     "About This PC      — Show system information with Fastfetch" \
     "About Hubsy        — Hubsy about section" \
-    "   " \
-    "Quit               — Exit Hubsy and Quit the terminal" \
-    "Shutdown           — Shutdown the system" \
-    "Restart            — Restart the system" \
+    "Quit Hubsy         — Exit Hubsy and Quit the terminal" \
+    "   "
+    "Lazydocker         — A simple terminal UI for docker" \
+    "Btop               — Resource Monitor on Terminal" \
+    "Linutil            — Chris Titus Tech's Linux Toolbox" \
+    "Systemctl-tui      — A TUI for manage systemd services" \
+    "   "
     "CheckMem           — Check memory" \
+    "Refresh Terminal   — Run a simple source ./bashrc " \
+    "Restart            — Restart the system" \
+    "Shutdown           — Shutdown the system" \
     "   "
 )
 
-# menu_options+=($(find ~/scripts -maxdepth 1 -type f -executable))
+scripts=($(find "$SCRIPTS_PATH" -maxdepth 1 -type f -executable))
+# menu_options+=("${scripts[@]##*/}")
+# menu_options+=("   ")
 
 # Só adiciona debug se tiver flag
 if [ "$HUBSY_DEBUG" -eq 1 ]; then
@@ -121,8 +120,13 @@ while true; do
             fi
             ;;
 
-        Install*)
+        "Install APT"*)
             $HUBSY_PATH/bin/apt-install.sh
+            gum confirm "Back to menu?" && continue
+            ;;
+        
+        "Install Flatpak"*)
+            $HUBSY_PATH/bin/flatpak-install
             gum confirm "Back to menu?" && continue
             ;;
 
@@ -131,6 +135,11 @@ while true; do
             source $HUBSY_PATH/bin/hubsy-update
 
             gum confirm "System and Hubsy updated. Back to menu?" && continue
+            ;;
+
+        Search*)
+            $HUBSY_PATH/bin/search-packages.sh
+            gum confirm "Back to menu?" && continue
             ;;
 
         Setup*)
