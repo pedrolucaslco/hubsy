@@ -1,3 +1,9 @@
+v0.9.0
+# What's Changed
+- New Flatpak install method
+- New Remove apt packages method
+- Add brew update to full system update option
+
 v0.6.1
 # What's Changed
 - New power options for shuwtdown and restart
