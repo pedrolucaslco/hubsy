@@ -6,6 +6,10 @@ gum spin --spinner dot --title "Updating APT packages..." -- sleep 1
 
 sudo apt update -y && sudo apt upgrade -y
 
+gum spin --spinner dot --title "Updating DNF packages..." -- sleep 1
+
+sudo dnf upgrade -y
+
 gum spin --spinner dot --title "Updating Flatpak packages..." -- sleep 1
 
 flatpak update -y
