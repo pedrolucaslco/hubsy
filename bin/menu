@@ -23,6 +23,7 @@ menu_options=(
     "Quit Hubsy         — Exit Hubsy and Quit the terminal" \
     "   "
     "Lazydocker         — A simple terminal UI for docker" \
+    "Podman Manager     — A simple podman containers manager" \
     "Btop               — Resource Monitor on Terminal" \
     "Linutil            — Chris Titus Tech's Linux Toolbox" \
     "Systemctl-tui      — A TUI for manage systemd services" \
@@ -77,6 +78,11 @@ while true; do
             gum spin --spinner dot --title "Opening a new terminal..." -- sleep 0.2
             echo 'To return do Hubsy, type "hubsy" and press Enter.'
             return 0 2>/dev/null || break
+            ;;
+
+        Podman*)
+            $HUBSY_PATH/bin/podman-manager.sh
+            gum confirm "Back to menu?" && continue
             ;;
 
         Scripts*)
